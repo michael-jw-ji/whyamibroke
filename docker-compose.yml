@@ -1,0 +1,17 @@
+services:
+  db:
+    image: postgres:15
+    container_name: expenses-db
+    restart: always
+    environment: 
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres 
+      POSTGRES_DB: expenses
+    command: -p 6666
+    ports:
+      - "6666:6666"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
