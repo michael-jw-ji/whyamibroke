@@ -1,5 +1,6 @@
 from datetime import datetime
-from app import db
+from database import db
+
 
 class ClassifiedTransaction(db.Model):
     __tablename__ = "classified_transactions"
@@ -9,6 +10,7 @@ class ClassifiedTransaction(db.Model):
     description = db.Column(db.String(255), nullable=False)
     amount = db.Column(db.Float, nullable=False)
     category = db.Column(db.String(100))
+    subcategory = db.Column(db.String(100))
 
     def __repr__(self):
         return f"<ClassifiedTransaction {self.id} {self.description} {self.amount} {self.category}>"

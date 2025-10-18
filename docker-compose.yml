@@ -1,4 +1,17 @@
 services:
+  app:
+    build: .
+    container_name: expenses-app
+    restart: unless-stopped
+    env_file: 
+    - .env
+    ports: 
+      - "7000:7000"
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - .:/app
   db:
     image: postgres:15
     container_name: expenses-db
@@ -7,11 +20,17 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres 
       POSTGRES_DB: expenses
-    command: -p 6666
+    #command: -p 5432 # supposedly not needed, need to try to connect to pgadmin without it
     ports:
-      - "6666:6666"
+      - "6800:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+    healthcheck: 
+      test: ["CMD-SHELL", "pg_isready -U postgres -d expenses"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
 volumes:
   pgdata:
